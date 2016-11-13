@@ -1,0 +1,20 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    background: url('../imgs/bg.jpg') no-repeat fixed #122b40;
+}
+
+@font-face {
+    font-family: orbitron;
+    src: url('../fonts/orbitron-medium.otf');
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1280px;
+    }
+}
