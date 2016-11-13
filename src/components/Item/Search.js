@@ -4,6 +4,9 @@ import axios from 'axios';
 import Autosuggest from 'react-autosuggest';
 import '../../assets/css/autosuggest.css';
 
+let searchTimer;
+const timeDebounce = 300;
+
 const Wrapper = styled.div`
     background-color: rgba(39,39,40,.9);
     padding: 12px;
@@ -22,7 +25,7 @@ const renderSuggestion = suggestion => (
     <div>{suggestion.item_name}</div>
 );
 
-class SearchInput extends React.Component {
+class Search extends React.Component {
     constructor(props) {
         super(props);
 
@@ -38,15 +41,19 @@ class SearchInput extends React.Component {
 
     onSuggestionsFetchRequested = ({ value }) => {
         if (value.length > 2) {
-            axios.post('http://ph.eve-productions.org/item/ng_searchItem', {'q': value}).then(
-                res => {
-                    this.setState({ suggestions: res.data.items });
-                }
-            ).catch(
-                err => {
-                    console.log(err);
-                }
-            );
+            clearTimeout(searchTimer);
+
+            searchTimer = setTimeout(() => {
+                axios.post('http://ph.eve-productions.org/item/ng_searchItem', {'q': value}).then(
+                    res => {
+                        this.setState({ suggestions: res.data.items });
+                    }
+                ).catch(
+                    err => {
+                        console.log(err);
+                    }
+                );
+            }, timeDebounce);
         }
     }
 
@@ -80,4 +87,4 @@ class SearchInput extends React.Component {
     }
 }
 
-export default SearchInput;
+export default Search;

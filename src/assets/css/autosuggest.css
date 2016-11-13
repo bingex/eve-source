@@ -18,6 +18,7 @@
 .react-autosuggest__suggestions-list {
     padding-left: 0;
     margin-top: 0;
+    margin-bottom: 0;
 }
 
 .react-autosuggest__suggestion--focused {
@@ -43,5 +44,6 @@
     display: block;
     padding-left: 0;
     max-height: 400px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
