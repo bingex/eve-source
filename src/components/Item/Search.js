@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Autosuggest from 'react-autosuggest';
+import { connect } from 'react-redux';
+import { getSimilarItems, setSimilarItems } from '../../actions/itemActions';
 import '../../assets/css/autosuggest.css';
 
 let searchTimer;
@@ -37,6 +39,9 @@ class Search extends React.Component {
 
     onChange = (event, { newValue }) => {
         this.setState({ value: newValue });
+        if (!newValue) {
+            this.props.setSimilarItems([]);
+        }
     }
 
     onSuggestionsFetchRequested = ({ value }) => {
@@ -55,6 +60,10 @@ class Search extends React.Component {
                 );
             }, timeDebounce);
         }
+    }
+
+    onSuggestionSelected = (event, { suggestion, suggestionValue, sectionIndex, method }) => {
+        this.props.getSimilarItems(suggestion.item_id);
     }
 
     onSuggestionsClearRequested = () => {
@@ -78,6 +87,7 @@ class Search extends React.Component {
                     suggestions={suggestions}
                     onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                     onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                    onSuggestionSelected={this.onSuggestionSelected}
                     getSuggestionValue={getSuggestionValue}
                     renderSuggestion={renderSuggestion}
                     inputProps={inputProps}
@@ -87,4 +97,9 @@ class Search extends React.Component {
     }
 }
 
-export default Search;
+Search.PropTypes = {
+    getSimilarItems: React.PropTypes.func.isRequired,
+    setSimilarItems: React.PropTypes.func.isRequired
+}
+
+export default connect(null, { getSimilarItems, setSimilarItems })(Search);

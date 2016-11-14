@@ -4,13 +4,16 @@ import { Provider } from 'react-redux';
 import { Router, hashHistory } from 'react-router';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import rootReducer from './rootReducer';
 import routes from './routes';
 
 const store = createStore(
     rootReducer,
-    applyMiddleware(thunk)
+    composeWithDevTools(
+        applyMiddleware(thunk)
+    )
 );
 
 render(

@@ -16,7 +16,7 @@
 }
 
 .react-autosuggest__suggestions-list {
-    padding-left: 0;
+    padding: 0;
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -29,10 +29,14 @@
     text-align: left;
     list-style: none;
     width: 100%;
-    padding: .1em;
+    padding: 2px 0;
     color: #314756;
     cursor: pointer;
     border-bottom: 1px solid #CCAB84;
+}
+
+.react-autosuggest__suggestion div {
+    padding-left: 10px;
 }
 
 .react-autosuggest__suggestions-container {
@@ -43,7 +47,4 @@
     background-color: #FFEDCB;
     display: block;
     padding-left: 0;
-    max-height: 400px;
-    overflow-y: auto;
-    overflow-x: hidden;
 }

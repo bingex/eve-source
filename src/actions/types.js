@@ -1,0 +1,1 @@
+export const SET_SIMILAR_ITEMS = "SET_SIMILAR_ITEMS";
