@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import similar from './reducers/similar';
+import itemsReducer from './reducers/itemsReducer';
 
 export default combineReducers({
-    similar
+    itemsReducer
 })

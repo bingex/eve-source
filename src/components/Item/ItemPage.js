@@ -6,8 +6,25 @@ import SimilarItems from './SimilarItems';
 import ItemInfo from './ItemInfo';
 
 const Col4 = styled.div`
-    margin-left: 0 !important;
-    margin-top: 2px !important;
+    padding: 0 2px 0 0;
+
+    @media(max-width: 768px) {
+        margin: 0;
+        padding: 0 2px 1px 0;
+    }
+`;
+
+const Col8 = styled.div`
+    padding: 0 2px 0 1px;
+
+    @media(max-width: 768px) {
+        margin: 0;
+        padding: 0 2px 0 0;
+    }
+`;
+
+const Wrapper = styled.div`
+    padding: 0;
 `;
 
 class ItemPage extends React.Component {
@@ -15,12 +32,10 @@ class ItemPage extends React.Component {
         return (
             <div>
                 <Search />
-                <div className="row">
-                    <Col4 className="col-4"><SimilarItems /></Col4>
-                    <div className="col-8">
-                        <ItemInfo />
-                    </div>
-                </div>
+                <Wrapper className="grid">
+                    <Col4 className="col-4-12"><SimilarItems /></Col4>
+                    <Col8 className="col-8-12"><ItemInfo /></Col8>
+                </Wrapper>
             </div>
         );
     }

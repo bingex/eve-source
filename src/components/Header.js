@@ -17,6 +17,7 @@ const Title = styled.h1`
 `;
 
 const Nav = styled.ul`
+    z-index: 3;
     width: 100%;
     font-size: 12px;
     padding: 0;

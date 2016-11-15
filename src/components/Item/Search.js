@@ -3,7 +3,14 @@ import styled from 'styled-components';
 import axios from 'axios';
 import Autosuggest from 'react-autosuggest';
 import { connect } from 'react-redux';
-import { getSimilarItems, setSimilarItems } from '../../actions/itemActions';
+import classnames from 'classnames';
+import { item_api } from '../../data/api_url';
+import {
+    getSimilarItems,
+    setSimilarItems,
+    getUsedInItems,
+    setActiveItem
+} from '../../actions/itemActions';
 import '../../assets/css/autosuggest.css';
 
 let searchTimer;
@@ -11,14 +18,41 @@ const timeDebounce = 300;
 
 const Wrapper = styled.div`
     background-color: rgba(39,39,40,.9);
-    padding: 12px;
+    padding: 12px 12px 20px 12px;
     margin-top: 3px;
+    margin-bottom: 2px;
+    position: relative;
 `;
 
 const Title = styled.h1`
-    font-size: 1.8em;
+    font-size: 1.5em;
+    float: left;
+    font-weight: 500;
     color: #e4d6ba;
     margin: 0;
+`;
+
+const P = styled.p`
+    position: absolute;
+    bottom: 24px;
+    right: 12px;
+    margin: 0;
+    color: #e4d6ba;
+    font-size: 14px;
+
+    @media(max-width: 768px) {
+        display: block;
+        position: inherit;
+        bottom: 0;
+        right: 0;
+    }
+`;
+
+const A = styled.a`
+    color: #B9964D;
+    text-decoration: underline;
+    position: relative;
+    z-index: 2;
 `;
 
 const getSuggestionValue = suggestion => suggestion.item_name;
@@ -49,7 +83,7 @@ class Search extends React.Component {
             clearTimeout(searchTimer);
 
             searchTimer = setTimeout(() => {
-                axios.post('http://ph.eve-productions.org/item/ng_searchItem', {'q': value}).then(
+                axios.post(item_api.search_item, {'q': value}).then(
                     res => {
                         this.setState({ suggestions: res.data.items });
                     }
@@ -63,7 +97,9 @@ class Search extends React.Component {
     }
 
     onSuggestionSelected = (event, { suggestion, suggestionValue, sectionIndex, method }) => {
+        this.props.setActiveItem(suggestion.item_name, suggestion.url);
         this.props.getSimilarItems(suggestion.item_id);
+        this.props.getUsedInItems(suggestion.item_id);
     }
 
     onSuggestionsClearRequested = () => {
@@ -81,7 +117,13 @@ class Search extends React.Component {
 
         return (
             <Wrapper>
-                <Title>Where components used?</Title>
+                <Title>Where components used? {this.props.active_item.name}</Title>
+
+                <P className={classnames({'hide': !this.props.active_item.url})}>Share:
+                    <A href={'http://ph.eve-productions.org/item/' + this.props.active_item.url}>
+                        {'http://ph.eve-productions.org/item/' + this.props.active_item.url}
+                    </A>
+                </P>
 
                 <Autosuggest
                     suggestions={suggestions}
@@ -97,9 +139,23 @@ class Search extends React.Component {
     }
 }
 
-Search.PropTypes = {
-    getSimilarItems: React.PropTypes.func.isRequired,
-    setSimilarItems: React.PropTypes.func.isRequired
+function mapStateToProps(state) {
+    return {
+        active_item: state.itemsReducer.active_item
+    };
 }
 
-export default connect(null, { getSimilarItems, setSimilarItems })(Search);
+Search.PropTypes = {
+    getSimilarItems: React.PropTypes.func.isRequired,
+    setSimilarItems: React.PropTypes.func.isRequired,
+    getUsedInItems: React.PropTypes.func.isRequired,
+    setActiveItem: React.PropTypes.func.isRequired,
+    active_item: React.PropTypes.string.isRequired
+}
+
+export default connect(mapStateToProps, {
+    getSimilarItems,
+    setSimilarItems,
+    getUsedInItems,
+    setActiveItem
+})(Search);
