@@ -21,6 +21,14 @@ body {
     background-color: rgba(22,112,146,.4);
 }
 
+.active_pag {
+    background-color: rgba(22,112,146,.2);
+}
+
+.show-item {
+    display: inline-block;
+}
+
 .hide {
     display: none;
 }

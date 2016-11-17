@@ -13,8 +13,8 @@ const Img = styled.img`
 
 class SimilarItems extends React.Component {
     onItemClick(item) {
-        this.props.setActiveItem(item.item_name, item.url);
-        this.props.getUsedInItems(item.item_id);
+        this.props.setActiveItem(item.item_id, item.item_name, item.url);
+        this.props.getUsedInItems(item.item_id, 1);
     }
 
     render() {
@@ -42,7 +42,7 @@ class SimilarItems extends React.Component {
     }
 }
 
-SimilarItems.PropTypes = {
+SimilarItems.propTypes = {
     items: React.PropTypes.array.isRequired,
     active_item: React.PropTypes.string.isRequired,
     setActiveItem: React.PropTypes.func.isRequired,

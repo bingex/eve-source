@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import Pagination from '../Pagination';
 import { Headline, Wrapper, Li, Span } from '../../data/styles';
 
 const Img = styled.img`
@@ -15,7 +16,7 @@ const Ul = styled.ul`
 
 class ItemInfo extends React.Component {
     render() {
-        const usedInItems = this.props.items.map(item =>
+        const usedInItems = this.props.items.items.map(item =>
             <Li key={item.blueprint_id}>
                 <Img alt="item img" src={'https://image.eveonline.com/Type/' + item.blueprint_id + '_32.png'} />
                 <Span>{item.blueprint_name}</Span>
@@ -23,18 +24,19 @@ class ItemInfo extends React.Component {
         );
 
         return (
-            (this.props.items.length > 0 ?
+            // (this.props.items.length > 0 ?
             <Wrapper>
                 <Headline>{this.props.active_item} used in</Headline>
                 <Ul>{usedInItems}</Ul>
+                <Pagination pagData={this.props.items} />
             </Wrapper>
-            : null)
+            // : null)
         );
     }
 }
 
-ItemInfo.PropTypes = {
-    items: React.PropTypes.array.isRequired,
+ItemInfo.propTypes = {
+    items: React.PropTypes.object.isRequired,
     active_item: React.PropTypes.string.isRequired
 }
 

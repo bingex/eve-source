@@ -83,7 +83,7 @@ class Search extends React.Component {
             clearTimeout(searchTimer);
 
             searchTimer = setTimeout(() => {
-                axios.post(item_api.search_item, {'q': value}).then(
+                axios.get(item_api.search_item + value).then(
                     res => {
                         this.setState({ suggestions: res.data.items });
                     }
@@ -97,9 +97,9 @@ class Search extends React.Component {
     }
 
     onSuggestionSelected = (event, { suggestion, suggestionValue, sectionIndex, method }) => {
-        this.props.setActiveItem(suggestion.item_name, suggestion.url);
+        this.props.setActiveItem(suggestion.item_id, suggestion.item_name, suggestion.url);
         this.props.getSimilarItems(suggestion.item_id);
-        this.props.getUsedInItems(suggestion.item_id);
+        this.props.getUsedInItems(suggestion.item_id, 1);
     }
 
     onSuggestionsClearRequested = () => {
@@ -145,12 +145,12 @@ function mapStateToProps(state) {
     };
 }
 
-Search.PropTypes = {
+Search.propTypes = {
     getSimilarItems: React.PropTypes.func.isRequired,
     setSimilarItems: React.PropTypes.func.isRequired,
     getUsedInItems: React.PropTypes.func.isRequired,
     setActiveItem: React.PropTypes.func.isRequired,
-    active_item: React.PropTypes.string.isRequired
+    active_item: React.PropTypes.object.isRequired
 }
 
 export default connect(mapStateToProps, {

@@ -6,10 +6,14 @@ import {
 
 const initialState = {
     active_item: {
+        id: '',
         name: '',
         url: ''
     },
-    used_in_items: [],
+    used_in_items: {
+        total_items: 0,
+        items: []
+    },
     items: []
 };
 
@@ -20,6 +24,7 @@ export default (state = initialState, action = {}) => {
                 items: action.items
             });
         case SET_USEDIN_ITEMS:
+
             return Object.assign({}, state, {
                 used_in_items: action.items
             });

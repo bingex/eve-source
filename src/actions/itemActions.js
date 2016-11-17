@@ -9,26 +9,19 @@ import {
 export function getSimilarItems(item_id) {
     return dispatch => {
         return axios
-            .post(item_api.get_similar_items, { item_id })
+            .get(item_api.get_similar_items + item_id)
             .then((res) => {
                 dispatch(setSimilarItems(res.data.items));
             });
     };
 }
 
-export function getUsedInItems(item_id) {
+export function getUsedInItems(item_id, page) {
     return dispatch => {
         return axios
-            .post(item_api.get_usedin_item,
-                {
-                    component_id: item_id,
-                    paginate: {
-                        limit: 15,
-                        page: 1
-                    }
-                })
+            .get(item_api.get_usedin_item + 'page=' + page + '&limit=15&component_id=' + item_id)
             .then((res) => {
-                dispatch(setUsedInItems(res.data.items));
+                dispatch(setUsedInItems(res.data));
             });
     };
 }
@@ -47,10 +40,11 @@ export function setUsedInItems(items) {
     };
 }
 
-export function setActiveItem(name, url) {
+export function setActiveItem(id, name, url) {
     return {
         type: SET_ACTIVE_ITEM,
         active_item: {
+            id: id,
             name: name,
             url: url
         }
